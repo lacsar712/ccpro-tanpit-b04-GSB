@@ -1,4 +1,4 @@
-from pits.models import LiquorSample, Pit, User, Yard
+from pits.models import LiquorSample, Pit, PitNote, User, Yard
 
 
 def seed_demo() -> None:
@@ -21,7 +21,15 @@ def seed_demo() -> None:
         ("西-1", Pit.STATUS_FILL, 2, 0, None),
         ("西-2", Pit.STATUS_DRAINED, 2, 1, 3.8),
     ]
+    pits = {}
     for code, status, row, col, ph in layout:
         pit = Pit.objects.create(yard=yard, code=code, status=status, row=row, col=col)
+        pits[code] = pit
         if ph is not None:
             LiquorSample.objects.create(pit=pit, ph=ph, operator="worker")
+    demo_notes = [
+        ("东-1", "青皮村东一坑第07鞣次，液色转深，皮身紧实，继续观察。"),
+        ("中-2", "青皮村中二坑第08鞣次，酸碱偏高，已补植物鞣料两瓢。"),
+    ]
+    for code, body in demo_notes:
+        PitNote.objects.create(pit=pits[code], body=body, author="worker")
