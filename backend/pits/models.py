@@ -39,3 +39,11 @@ class LiquorSample(models.Model):
     taken_at = models.DateTimeField(auto_now_add=True)
     ph = models.FloatField()
     operator = models.CharField(max_length=64, blank=True)
+
+
+class PitNote(models.Model):
+    pit = models.ForeignKey(Pit, on_delete=models.CASCADE, related_name="notes")
+    body = models.TextField()
+    author = models.CharField(max_length=64, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
